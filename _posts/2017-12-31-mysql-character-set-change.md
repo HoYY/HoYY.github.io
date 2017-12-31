@@ -69,7 +69,6 @@ my.cnf 설정파일에서 [mysqld]의 `default-caracter-set=utf8` 부분을 지�
 
 mysql 내에서 status를 통해 character set을 확인해 보니
 
-
 Connection id:          37
 Current database:       test
 Current user:           root@localhost
