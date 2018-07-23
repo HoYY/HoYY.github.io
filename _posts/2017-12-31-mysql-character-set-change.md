@@ -45,7 +45,7 @@ default-character-set = utf8
 이라는 오류문구가 나왔다.
 <pre><code>service mysql status</code></pre>
 
-를 통해 mysql이 동작하고 있는지 확인해 보았다.
+를 통해 mysql이 동작하고 있는지 확인해 보았다.  
 
 
 <pre><code>● mysql.service - LSB: Start and stop the mysql database server daemon
@@ -65,21 +65,21 @@ Dec 28 04:10:16 cinnamonpi_4 systemd[1]: Failed to start LSB: Start and....
 Dec 28 04:10:16 cinnamonpi_4 systemd[1]: Unit mysql.service entered fai....
 </code></pre>
 
-mysql이 오류로 인해 동작을 안하고있었다. 오류로그를 확인해보기로 했다.
+mysql이 오류로 인해 동작을 안하고있었다. 오류로그를 확인해보기로 했다.  
 **/var/log/mysql/error.log** 경로의 오류로그를 살펴보니
-*171228  4:27:27 [ERROR] /usr/sbin/mysqld: unknown variable 'default-character-set=utf8'* 이라는 오류로그를 확인할 수 있었다.
-my.cnf 설정파일에서 [mysqld]의 **default-caracter-set=utf8** 이 부분이 문제가 된것으로 보인다.
-여러 자료들을 살펴보니 5.5.3버전 부터 mysqld의 **default-caracter-set** 설정이 없어진 것을 알게 되었다.
+*171228  4:27:27 [ERROR] /usr/sbin/mysqld: unknown variable 'default-character-set=utf8'* 이라는 오류로그를 확인할 수 있었다.  
+my.cnf 설정파일에서 [mysqld]의 **default-caracter-set=utf8** 이 부분이 문제가 된것으로 보인다.  
+여러 자료들을 살펴보니 5.5.3버전 부터 mysqld의 **default-caracter-set** 설정이 없어진 것을 알게 되었다.  
 
 <https://dev.mysql.com/doc/refman/5.5/en/server-options.html#option_mysqld_default-character-set>
 
-my.cnf 설정파일에서 [mysqld]의 **default-caracter-set=utf8** 부분을 지운 후에 다시 mysql을 start시키니 정상적으로 작동이 되었다.
+my.cnf 설정파일에서 [mysqld]의 **default-caracter-set=utf8** 부분을 지운 후에 다시 mysql을 start시키니 정상적으로 작동이 되었다.  
 
 --------------------------------------------------------------
 
 # 2. mysql db 및 table character set 변경
 
-mysql 내에서 status를 통해 character set을 확인해 보니
+mysql 내에서 status를 통해 character set을 확인해 보니  
 
 <pre><code>Connection id:          37
 Current database:       test
@@ -99,10 +99,12 @@ UNIX socket:            /var/run/mysqld/mysqld.sock
 Uptime:                 9 min 45 sec
 </code></pre>
 
-위와 같이 **Db characterset**이 **latin1**로 되있는 것을 확인하였고, 다시 insert문과 select문을 해봤지만 여전히 한글이 깨지는 현상이 일어났다.
+위와 같이 **Db characterset**이 **latin1**로 되있는 것을 확인하였고, 다시 insert문과 select문을 해봤지만 여전히 한글이 깨지는 현상이 일어났다.  
+
 <pre><code>alter database test default character set utf8</code></pre>
 
-을 통해 db의 character set을 바꿔주고
+을 통해 db의 character set을 바꿔주고  
+
 <pre><code>alter table attend convert to charset utf8</code></pre>
 
 로 table의 character set 또한 바꿔주었다.

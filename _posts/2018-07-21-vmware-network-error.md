@@ -7,7 +7,8 @@ hero: https://source.unsplash.com/collection/261936/
 overlay: skyblue
 ---
 
-VMware를 사용하다 보면 용량이 너무 커져 하드의 공간이 부족해지는 일을 많은 분들이 겪었을 것이라 생각됩니다. 저 또한 이와 같은 상황에 처해져 외장 SSD에 사용 중이던 VMware 옮기게 되었는데 구글 검색을 통해 찾은 글을 참고하여 copy it/move it 을 묻는 창에서 move it을 선택하였더니 network가 연결이 되지 않는 문제가 발생하였습니다. 때문에 이 게시물에서는 이 문제의 해결방안을 다뤄보겠습니다.
+VMware를 사용하다 보면 용량이 너무 커져 하드의 공간이 부족해지는 일을 많은 분들이 겪었을 것이라 생각됩니다.  
+저 또한 이와 같은 상황에 처해져 외장 SSD에 사용 중이던 VMware 옮기게 되었는데 구글 검색을 통해 찾은 글을 참고하여 copy it/move it 을 묻는 창에서 move it을 선택하였더니 network가 연결이 되지 않는 문제가 발생하였습니다. 때문에 이 게시물에서는 이 문제의 해결방안을 다뤄보겠습니다.
 {: .lead}
 
 # 1. Virtual Network Editor
