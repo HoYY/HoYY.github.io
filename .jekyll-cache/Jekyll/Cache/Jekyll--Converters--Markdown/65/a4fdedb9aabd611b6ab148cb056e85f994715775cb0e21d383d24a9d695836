@@ -1,0 +1,10 @@
+I"�<p>[환경]<br />
+Spring Tool Suite(STS) 3.9.5 RELEASE<br />
+Spring Boot 2.1.8.RELEASE<br />
+jdk 1.8.0_181<br />
+MySQL 8.0.17</p>
+
+<p>이번 포스터에서는 Spring Security를 적용하는 방법을 다뤄보도록 하겠습니다.<br />
+Spring Security는 사용자 인증이나, 권한 체크, CSRF(Cross Site Request Forgery) 공격을 막아주는 등 보안에 관련된 여러 기능을 제공해주는 프레임 워크입니다.</p>
+
+:ET

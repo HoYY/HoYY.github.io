@@ -2,7 +2,7 @@
 layout: post
 title:  "VMware 외장하드로 옮긴 후 Network 연결 오류"
 tags:
-  - VMware
+  - vmware
 hero: https://source.unsplash.com/collection/261936/
 overlay: skyblue
 ---

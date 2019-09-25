@@ -2,7 +2,7 @@
 layout: post
 title:  "MYSQL character set utf8로 변경하기"
 tags:
-  - MYSQL
+  - mysql
 hero: https://source.unsplash.com/collection/427433/
 overlay: gray
 ---

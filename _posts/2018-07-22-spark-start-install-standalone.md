@@ -2,8 +2,7 @@
 layout: post
 title:  "Spark 시작하기 - 설치 및 Standalone"
 tags:
-  - Spark
-  - Standalone
+  - spark
 hero: https://source.unsplash.com/collection/345758/
 overlay: lavender
 ---
