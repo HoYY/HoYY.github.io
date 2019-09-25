@@ -1,0 +1,10 @@
+I"�<p>[환경]<br />
+Spring Tool Suite(STS) 3.9.5 RELEASE<br />
+Spring Boot 2.1.8.RELEASE<br />
+jdk 1.8.0_181<br />
+MySQL 8.0.17</p>
+
+<p>이번 포스터에서는 STS(Spring Tool Suite)에 Lombok을 적용하는 방법을 다뤄보도록 하겠습니다.<br />
+Lombok은 Getter, Setter와 같은 고정적으로 반복되는 코드들을 어노테이션을 통해 손쉽게 생성해주는 라이브러리입니다.</p>
+
+:ET
