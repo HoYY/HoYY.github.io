@@ -7,11 +7,12 @@ tags:
 hero: https://source.unsplash.com/collection/582860/
 overlay: aliceblue
 ---
-[환경]
-Spring Tool Suite(STS) 3.9.5 RELEASE
-{: .lead}
+[환경]  
+Spring Tool Suite(STS) 3.9.5 RELEASE  
 
 이번 포스터에서는 STS의 Project와 Github의 Repository를 연동하는 방법을 다뤄보도록 하겠습니다.
+{: .lead}
+<!–-break-–>
 
 # 1. Github Repository 등록
 

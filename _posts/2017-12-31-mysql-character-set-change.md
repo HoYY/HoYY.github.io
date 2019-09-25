@@ -11,6 +11,7 @@ mysql : 5.5.57
 
 php 파일을 통해 insert문과 select문을 하여 mysql에 데이터를 넣거나 가져오는데 한글이 물음표로 나오거나 깨지는 현상이 일어났다. 때문에 이 문제를 해결한 과정을 적어보려고 한다. 이 문제를 해결하기 위해 php파일 내에서의 character set과 파일을 저장할때 인고딩 형식과 mysql의 character set을 모두 utf8로 통일시켜줘야 한다. 이 게시물에서는 mysql의 character set을 설정하는 과정을 담아보려고 한다.
 {: .lead}
+<!–-break-–>
 
 # 1. my.cnf 파일수정
 

@@ -7,12 +7,14 @@ tags:
 hero: https://source.unsplash.com/collection/345758/
 overlay: lavender
 ---
-[환경]
+[환경]  
 Ubuntu 16.04.3 LTS
 
 최근 Spark 공부를 하게 되면서 알게 된 내용들을 적어보려고 합니다.  
-이번 글에서는 Spark를 시작하기 위한 설치 부분과 Standalone 모드에 대해 다뤄보도록 하겠습니다.  
+이번 글에서는 Spark를 시작하기 위한 설치 부분과 단일 노드를 사용하는 Standalone 모드에 대해 다뤄보도록 하겠습니다.  
+Standalone 모드는 다른 클러스터 매니저를 사용하지 않고 Spark 만으로 클러스터를 구성하는 모드를 말한다. 단일 노드로도 구성할 수 있고, 복수의 노드로도 구성할 수 있다.
 {: .lead}
+<!–-break-–>
 
 # 1. Apache Spark란?
 
@@ -70,10 +72,10 @@ export SPARK_EXECUTOR_CORES=1
 export SPARK_EXECUTOR_MEMORY=1g
 </code></pre>
 
-**SPARK_MASTER_IP**는 말 그대로 MASTER 노드의 IP이다. Standalone 모드를 할 것이니 현재 노드의 IP를 넣어주자.  
+**SPARK_MASTER_IP**는 말 그대로 MASTER 노드의 IP이다. 하나의 노드만 사용할 것이니 현재 노드의 IP를 넣어주자.  
 **SPAKR_MASTER_HOST**는 MASTER의 호스트이다. 아래에서도 언급하겠지만 spark-env.sh에 적어놓은 호스트를 **/etc/hosts** 파일에도 적어놓아야 한다.  
 **WORKER_INSTANCES, EXECUTOR_CORES, EXECUTOR_MEMORY**는 각각 worker의 수, executor 하나의 코어 수, executor 하나의 memory이다.  
-이제 **spark-defaults.sh**의 가장 아래에 있는 **spark.master** 항목과 **spark.serializer** 항목의 '#'을 지우고 내용을 수정해준다.  
+이제 **spark-defaults.conf**의 가장 아래에 있는 **spark.master** 항목과 **spark.serializer** 항목의 '#'을 지우고 내용을 수정해준다.  
 
 <pre><code>spark-defaults.conf파일
 
@@ -102,6 +104,6 @@ Apache Spark에서는 빅데이터 애플리케이션을 위해 KryoSerializer�
 
 ![Alt text](/uploads/spark_standalone.PNG)
 
-참고 사이트
+[참고 사이트]  
 <https://spark.apache.org/docs/latest/spark-standalone.html>
 <http://spark.apache.org/docs/latest/tuning.html#data-serialization>
