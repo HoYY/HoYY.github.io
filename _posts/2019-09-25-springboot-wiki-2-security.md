@@ -26,7 +26,7 @@ Spring Security를 설정하기 앞서 src/main/resources 아래에 있는 appli
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
-spring.datasource.url=jdbc:mysql://localhost:3306/wiki?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+spring.datasource.url=jdbc:mysql://localhost:3306/DbName?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
 spring.datasource.username=root
 spring.datasource.password=1234
 </code></pre>
