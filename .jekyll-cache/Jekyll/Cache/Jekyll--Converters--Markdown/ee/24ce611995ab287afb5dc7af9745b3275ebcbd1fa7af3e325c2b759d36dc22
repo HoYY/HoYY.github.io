@@ -1,0 +1,11 @@
+I"�<p>[환경]<br />
+Spring Tool Suite(STS) 3.9.5 RELEASE<br />
+Spring Boot 2.1.8.RELEASE<br />
+jdk 1.8.0_181<br />
+MySQL 8.0.17</p>
+
+<p>저번 포스터에서 JPA ManyToMany 관계에 대해서 살펴봤습니다. Entity 구성이 끝났으니 이제 ManyToMany 관계에서 어떻게 Join 테이블에 접근하는지 알아야 합니다.<br />
+Spring Data JPA의 JpaRepository를 사용할 경우 기본적인 SELECT, INSERT, DELETE 쿼리를 메소드명의 조합으로 작성할 수 있는데, UPDATE 쿼리의 경우 @Query 어노테이션을 사용하여 작성해야 합니다.<br />
+이번 포스터에서는 이 두 가지 내용을 다뤄보도록 하겠습니다.</p>
+
+:ET

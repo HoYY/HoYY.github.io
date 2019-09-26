@@ -1,10 +1,0 @@
-I"<p>[환경]<br />
-Spring Tool Suite(STS) 3.9.5 RELEASE<br />
-Spring Boot 2.1.8.RELEASE<br />
-jdk 1.8.0_181<br />
-MySQL 8.0.17</p>
-
-<p>이번 포스터에서는 @ManyToMany 어노테이션을 사용하여 두개의 Entity 사이에 다대다 관계를 mapping 하는 방법을 다뤄보겠습니다.<br />
-DataBase에는 글의 정보를 담고있는 Board 테이블과 태그 정보를 담고있는 Tag 테이블이 있습니다. WIKI 프로젝트 특성상 하나의 Board는 여러개의 Tag를 갖을 수 있고, 하나의 Tag 또한 여러개의 Board에 포함될 수 있습니다. 저는 <strong>@JoinTable</strong> 어노테이션을 사용해서 Board 테이블과 Tag 테이블 사이에 다대다 관계를 성립시켜주는 테이블을 생성하는 방법을 사용할 것입니다. RDB에서 정규화를 신경쓰면서 다대다 관계를 테이블 두개로 표현하는 방법은 없다고 생각합니다. 물론 @JoinTable과 @ManyToMany 어노테이션을 사용하지 않고 수동으로 테이블들을 Create 해주고 Join 쿼리를 통해 튜플들에 접근해도 됩니다. 하지만 이렇게 할 경우 데이터 무결성에 위배될 수도 있고, Board를 저장하거나 수정할 때 원래면 작성하지 않아도 될 추가적인 코드가 발생할 것입니다.</p>
-
-:ET
