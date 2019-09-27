@@ -74,7 +74,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.logoutSuccessUrl("/login")
 				.invalidateHttpSession(true)
 				.permitAll();
-	}</code></pre>
+	}
+</code></pre>
     
 configure 메소드를 살펴보면 먼저 로그인과 회원가입 기능은 모든 사용자가 접근이 가능해야 하기 때문에 permitAll()을 사용해줍니다. 또한 모든 페이지에서 사용되는 정적 파일인 css, js에 대한 접근도 permitAll()을 사용해 모두 허용해줍니다.  
 나중에 관리자 페이지를 만들기 위해 **hasRole()**을 사용하여 **'/admin'** URL에 대해서 **'ROLE_ADMIN'** 권한이 있어야만 접근이 가능하게 해줍니다. hasRole("a")을 사용하게 될 경우 기본적으로 앞에 'ROLE_'이 붙어 'ROLE_a' 권한으로 검사하게 됩니다.  
@@ -213,9 +214,10 @@ import com.hoyy.hpcwiki.models.Account;
 import com.hoyy.hpcwiki.models.Account.Role;
 
 @Repository
-public interface AccountRepository extends JpaRepository<Account, String> {
+public interface AccountRepository extends JpaRepository&lt;Account, String&gt; {
 
-}</code></pre>  
+}
+</code></pre>  
 
 --------------------------------------------------------------
 # 5. Create UserDetailsImpl

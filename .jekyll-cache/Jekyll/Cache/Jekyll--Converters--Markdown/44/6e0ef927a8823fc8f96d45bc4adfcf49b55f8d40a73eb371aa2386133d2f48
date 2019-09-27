@@ -1,0 +1,9 @@
+I"�<p>[환경]<br />
+Spring Tool Suite(STS) 3.9.5 RELEASE<br />
+Spring Boot 2.1.8.RELEASE<br />
+jdk 1.8.0_181<br />
+MySQL 8.0.17</p>
+
+<p>이번 포스터에서는 Thymeleaf Layout Dialect를 사용하여 Layout을 구성하는 법을 다루고, GitHub에 오픈소스로 공개되있는 Markdown js 프로젝트를 사용하여 WIKI 작성 페이지를 만들도록 하겠습니다.</p>
+
+:ET

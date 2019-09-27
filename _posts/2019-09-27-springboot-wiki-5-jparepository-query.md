@@ -90,8 +90,7 @@ Board의 tags에 'A' Tag가 있었는데 setTags()를 통해 'A', 'B' Tag들을 
 
 # 2. Spring Data JPA Update Query
 JpaRepository에서 @Query 어노테이션을 사용하여 UPDATE 쿼리를 작성할 경우 일반적인 SELECT 쿼리와 다르게 @Modifying 어노테이션을 사용해야 합니다.  
-<pre><code>
-@Modifying
+<pre><code>@Modifying
 @Query("update Board b set b.title = ?1, b.contents = ?2, b.writer = ?3, b.date = ?4"
 		+ ", b.tags = ?5 where b.boardNo = ?6")
 void updateBoardByBoardNo(String title, String contents, String writer, String date, Set&lt;Tag&gt; tags, int boardNo);

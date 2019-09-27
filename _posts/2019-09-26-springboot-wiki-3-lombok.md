@@ -22,7 +22,7 @@ Lombok은 Getter, Setter와 같은 고정적으로 반복되는 코드들을 어
 
 # 1. Gradle Dependency 추가
 
-우선 Lombok을 사용하기 위해 gradle.build에 Lombok을 추가해줍니다.  
+우선 Lombok을 사용하기 위해 build.gradle에 Lombok을 추가해줍니다.  
 <pre><code>plugins {
 	id 'org.springframework.boot' version '2.1.8.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.8.RELEASE'
@@ -52,7 +52,7 @@ dependencies {
 }
 </code></pre>
 
-gradle.build에 Lombok을 추가했으면 프로젝트를 우클릭하여 Refresh Gradle Project를 클릭하여 프로젝트의 라이브러리들을 최신화 시켜줍니다.  
+build.gradle에 Lombok을 추가했으면 프로젝트를 우클릭하여 Refresh Gradle Project를 클릭하여 프로젝트의 라이브러리들을 최신화 시켜줍니다.  
 이제 Getter, Setter를 추가하고 싶은 클래스에 @Getter, @Setter 어노테이션을 명시해줍니다. 이렇게 해주면 정상적으로 Getter, Setter가 생성돼야 하지만 막상 하게 되면 Getter, Setter가 생성되지 않아 오류가 발생하게 됩니다.  
 
 --------------------------------------------------------------

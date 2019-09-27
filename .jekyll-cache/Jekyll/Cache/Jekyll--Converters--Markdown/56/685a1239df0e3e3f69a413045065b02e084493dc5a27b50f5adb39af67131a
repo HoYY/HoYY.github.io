@@ -1,0 +1,9 @@
+I"�<p>[환경]<br />
+Spring Tool Suite(STS) 3.9.5 RELEASE<br />
+Spring Boot 2.1.8.RELEASE<br />
+jdk 1.8.0_181<br />
+MySQL 8.0.17</p>
+
+<p>이번 포스터에서는 Spring Boot에서 공식 지원하는 템플릿 엔진 중 하나인 Thymeleaf의 문법 중에 WIKI 프로젝트에서 사용한 문법들을 다뤄보도록 하겠습니다. Thymeleaf는 서버에서 템플릿에 따라 html을 그려서 클라이언트에 전달해주는 서버 사이드 템플릿 엔진입니다.</p>
+
+:ET
