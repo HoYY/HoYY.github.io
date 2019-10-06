@@ -57,7 +57,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.authorizeRequests()
 				.antMatchers("/login", "/signup", "/account", "/bootstrap/**", "/js/**", "/css/**")
 				.permitAll()
-				.antMatchers("/admin/**").hasRole("ADMIN")
+				.antMatchers("/root/**").hasRole("ADMIN")
 				.anyRequest().authenticated()
 				.and()
 			.formLogin()
@@ -78,7 +78,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 </code></pre>
     
 configure 메소드를 살펴보면 먼저 로그인과 회원가입 기능은 모든 사용자가 접근이 가능해야 하기 때문에 permitAll()을 사용해줍니다. 또한 모든 페이지에서 사용되는 정적 파일인 css, js에 대한 접근도 permitAll()을 사용해 모두 허용해줍니다.  
-나중에 관리자 페이지를 만들기 위해 **hasRole()**을 사용하여 **'/admin'** URL에 대해서 **'ROLE_ADMIN'** 권한이 있어야만 접근이 가능하게 해줍니다. hasRole("a")을 사용하게 될 경우 기본적으로 앞에 'ROLE_'이 붙어 'ROLE_a' 권한으로 검사하게 됩니다.  
+나중에 관리자 페이지를 만들기 위해 **hasRole()**을 사용하여 **'/root'** URL에 대해서 **'ROLE_ADMIN'** 권한이 있어야만 접근이 가능하게 해줍니다. hasRole("a")을 사용하게 될 경우 기본적으로 앞에 'ROLE_'이 붙어 'ROLE_a' 권한으로 검사하게 됩니다.  
 **formLogin()** 부분은 로그인 기능을 설정하는 부분입니다. loginPage()는 로그인 페이지의 경로를 설정하는 부분이고, loginProcessingUrl()은 로그인을 백엔드에서 처리하는 경로입니다. **loginPage()를 통해 '/login'으로 로그인 페이지 경로를 설정해줬기 때문에 컨트롤러에서 '/login' request를 자신의 로그인 페이지로 mapping 해주어야 합니다.** loginProcessingUrl()의 경로와 login 페이지에서 백엔드로 값을 넘겨주는 경로를(form 태그의 action 등) 같게 설정해야 합니다. defaultSuccessUrl()은 로그인 성공 시 이동할 경로를 뜻한다. usernameParameter()와 passwordParameter()는 로그인 시의 파라미터 name입니다. usernameParameter()의 default 값은 'username' 입니다. form 태그의 값들과 맞게 설정해주시면 됩니다. failureUrl()은 말 그대로 로그인 실패 시 redirect 될 URL 입니다.  
 **logout()** 부분은 로그아웃 기능을 설정하는 부분입니다. logoutUrl()은 로그아웃을 수행할 경로이고 logoutSuccessUrl()은 로그아웃 시 redirect 될 경로입니다. 또한 invalidateHttpSession(true)를 통해 로그아웃 시 세션을 없애줍니다.  
   
@@ -110,7 +110,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.authorizeRequests()
 				.antMatchers("/login", "/signup", "/account", "/bootstrap/**", "/js/**", "/css/**")
 				.permitAll()
-				.antMatchers("/admin/**").hasRole("ADMIN")
+				.antMatchers("/root/**").hasRole("ADMIN")
 				.anyRequest().authenticated()
 				.and()
 			.formLogin()

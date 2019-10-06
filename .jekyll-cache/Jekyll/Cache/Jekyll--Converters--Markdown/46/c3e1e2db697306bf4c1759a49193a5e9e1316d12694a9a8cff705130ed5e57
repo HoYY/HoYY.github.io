@@ -1,0 +1,13 @@
+I"�<p>[환경]<br />
+Spring Tool Suite(STS) 3.9.5 RELEASE<br />
+Spring Boot 2.1.8.RELEASE<br />
+jdk 1.8.0_181<br />
+MySQL 8.0.17</p>
+
+<p>이번 포스터에서는 Hibernate Search, Lucene을 사용하는 검색 기능에 대해서 다뤄보도록 하겠습니다.<br />
+앞에서 언급했다시피 이번 프로젝트에선 ORM을 위해 Hibernate와 JPA를 사용했습니다. 이미 Hibernate와 JPA를 사용하고 있다면 추가 설정 없이 아주 쉽게 Hibernate Search를 이용할 수 있다는 장점이 있습니다. 또한 고성능의 확장 가능한 Full-Text 검색 엔진 라이브러리인 Apache Lucene을 직접적으로 사용하여 강력한 분석 프레임워크의 모든 기능을 제공할 수 있다고 공식 홈페이지에 나와있습니다.<br />
+ElasticSearch와도 통합하여 확장이 가능하다고 나와있지만 이번 WIKI 프로젝트에 그 정도까지는 필요 없을 것 같으니 다루지 않도록 하겠습니다.<br />
+또한 최근에는(2019-09-24) Hibernate Search 6.0.0.Beta1 버전이 출시되었습니다.<br />
+<a href="https://hibernate.org/search/">https://hibernate.org/search/</a></p>
+
+:ET

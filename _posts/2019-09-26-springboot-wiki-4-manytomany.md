@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "WIKI - String Boot JPA ManyToMany Mapping"
+title:  "WIKI - Spring Boot JPA ManyToMany Mapping"
 tags:
   - springboot
   - wiki

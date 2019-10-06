@@ -1,0 +1,185 @@
+I"1,<p>[환경]<br />
+Spring Tool Suite(STS) 3.9.5 RELEASE<br />
+Spring Boot 2.1.8.RELEASE<br />
+jdk 1.8.0_181<br />
+MySQL 8.0.17</p>
+
+<p>이번 포스터에서는 Hibernate Search, Lucene을 사용하는 검색 기능에 대해서 다뤄보도록 하겠습니다.<br />
+앞에서 언급했다시피 이번 프로젝트에선 ORM을 위해 Hibernate와 JPA를 사용했습니다. 이미 Hibernate와 JPA를 사용하고 있다면 추가 설정 없이 아주 쉽게 Hibernate Search를 이용할 수 있다는 장점이 있습니다. 또한 고성능의 확장 가능한 Full-Text 검색 엔진 라이브러리인 Apache Lucene을 직접적으로 사용하여 강력한 분석 프레임워크의 모든 기능을 제공할 수 있다고 공식 홈페이지에 나와있습니다.<br />
+ElasticSearch와도 통합하여 확장이 가능하다고 나와있지만 이번 WIKI 프로젝트에 그정도 까지는 필요 없을 것 같으니 다루지 않도록 하겠습니다.<br />
+또한 최근에는(2019-09-24) Hibernate Search 6.0.0.Beta1 버전이 출시되었습니다.<br />
+<a href="https://hibernate.org/search/">https://hibernate.org/search/</a></p>
+
+<p class="lead">&lt;!–-break-–&gt;</p>
+
+<h1 id="1-buildgradle-dependencies-추가">1. build.gradle dependencies 추가</h1>
+
+<p>먼저 Gradle에 의존성을 추가해줍니다.</p>
+<pre><code>dependencies {
+...
+implementation 'org.hibernate:hibernate-search-orm:5.11.1.Final'
+...
+}
+</code></pre>
+
+<p>dependencies를 추가했으면 Refresh Gradle Project를 눌러 최신화를 시켜줍니다.</p>
+
+<hr />
+
+<h1 id="2-directory-configuration">2. Directory Configuration</h1>
+
+<p>다음으로 Spring의 설정파일인 application.properties에 인덱스를 저장할 위치를 명시해 줍니다. yaml을 사용할 경우 application.yml에 적어줍니다.</p>
+<pre><code>//application.properties
+spring.jpa.properties.hibernate.search.default.directory_provider=filesystem
+spring.jpa.properties.hibernate.search.indexBase=D:/tmp
+</code></pre>
+
+<pre><code>//application.yml
+spring:
+  jpa:
+    properties:
+      hibernate:
+        search:
+          default:
+            directory_provider: filesystem
+            indexBase: D:/tmp
+</code></pre>
+
+<p><strong>directory_provider=filesystem</strong>으로 설정할 경우 파일시스템 기반 디렉토리를 인덱스 저장에 사용한다는 것입니다. 또한 <strong>indexBase</strong>로 설정한 디렉토리가 없을 경우 자동으로 만들어집니다. 사용되는 디렉토리는 &lt;indexBase&gt;/&lt;indexName&gt;입니다.
+<a href="https://docs.jboss.org/hibernate/stable/search/reference/en-US/html_single/#search-configuration-directory">https://docs.jboss.org/hibernate/stable/search/reference/en-US/html_single/#search-configuration-directory</a></p>
+
+<hr />
+
+<h1 id="3-entity-configuration">3. Entity Configuration</h1>
+
+<p>이제 검색에 사용할 Entity 클래스에 인덱싱을 위한 <strong>@Indexed, @Field</strong> 어노테이션을 추가해줍니다.</p>
+<pre><code>@Entity
+<u><strong>@Indexed</strong></u>
+@Getter
+@Setter
+@Table(name="board")
+public class Board {
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    @Column(name="no", length=10)
+    private int boardNo;
+	
+    @ManyToMany(cascade=CascadeType.PERSIST)
+    @JoinTable(name="board_tag", joinColumns = {@JoinColumn(name="board_no")},
+            inverseJoinColumns = {@JoinColumn(name="tag_no")})
+    private Set&lt;Tag&gt; tags = new HashSet&lt;&gt;();
+	
+    <u><strong>@Field</strong></u>
+    @NotNull
+    @Column(length=50)
+    private String title;
+
+    ...
+    
+    public void addTags(Tag tag) {
+        tags.add(tag);
+    }
+}</code></pre>
+
+<p><strong>@Indexed</strong> 어노테이션은 인덱싱할 Entity를 명시해 주는 것이고, <strong>@Field</strong> 어노테이션은 Entity 클래스에서 어떤 컬럼을 검색에 사용할 것인지를 명시해주는 것입니다. 검색하기위한 쿼리를 작성할 때 onFields() 메소드를 사용하여 여러 컬럼을 검색하거나 쿼리를 여러개 작성하여 여러 컬럼을 검색할 것이라면 해당 컬럼들에 <strong>@Field</strong> 어노테이션을 명시해 주면 됩니다.<br />
+저는 title, contents, writer 컬럼들을 onFields() 메소드를 통해 검색하려 했지만, 아리랑 라이브러리를 적용할 경우 검색이 정상적으로 되지 않는 문제가 있었습니다. 때문에 저는 title 컬럼 하나를 사용하여 검색 쿼리를 구성하였습니다.</p>
+
+<hr />
+
+<h1 id="4-hibernatesearchservice-클래스">4. HibernateSearchService 클래스</h1>
+
+<p>다음으로 쿼리 등 Hibernate Search를 사용하기 위한 코드들로 구성되어 있는 HibernateSearchService 클래스를 만들어보도록 하겠습니다.</p>
+<pre><code>FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
+fullTextEntityManager.createIndexer().startAndWait();
+</code></pre>
+
+<p>위의 코드는 FullTextEntityManager를 통해 검색에 사용될 인덱스를 만드는 코드입니다. FullTextEntityManager는 Full-Text 기능을 위해 EntityManager를 확장한 객체입니다. 위의 코드를 메소드로 만들어 새로운 글을 작성하거나 기존 글을 수정할 때 인덱스를 다시 빌드하여 최신의 상태를 유지하도록 했습니다.<br />
+<a href="http://hibernate.org/search/documentation/getting-started/#indexing">http://hibernate.org/search/documentation/getting-started/#indexing</a></p>
+
+<p>다음으로는 쿼리를 생성해 검색 결과를 가져오는 메소드를 만들도록 하겠습니다.<br />
+먼저 위와 같이 FullTextEntityManager를 생성해주고 Lucene 쿼리를 만들기 위한 QueryBuilder 객체를 만들어줍니다. 아래의 코드 중 forEntity() 메소드에는 쿼리에 사용할 Entity 클래스를 인자값으로 넣어줘야 합니다.</p>
+<pre><code>FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
+QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory()
+                             .buildQueryBuilder().forEntity(Board.class).get();
+</code></pre>
+
+<p>이제 검색에 사용할 쿼리를 만들어줍니다. 가장 기본적인 Keyword 쿼리를 만들어 보도록 하겠습니다.</p>
+<pre><code>Query query = queryBuilder.keyword().onField("title")
+                .matching(keyword).createQuery();
+</code></pre>
+
+<p>Keyword를 입력받아 title 컬럼에서 검색하는 가장 기본적인 쿼리입니다. 위의 쿼리에서 onField() 대신 <strong>onFields(“A”, “B”)</strong>를 사용하게 되면 여러개의 컬럼에서 검색이 가능합니다. Hibernate Search와 Lucene은 기본적으로 index에서 공백문자를 기준으로 Keyword와 매칭합니다.<br />
+하지만 저는 ‘Spark’를 검색 시 ‘Spark’ 뿐만 아니라 ‘SparkML’ 이나 ‘TensorflowOnSpark’ 와 같이 ‘Spark’ 가 포함된 Keyword를 모두 찾고 싶습니다. 이를 위해 사용할 수 있는 기능이 와일드카드 기능입니다.</p>
+<pre><code>Query query = queryBuilder.keyword().wildcard().onField("title")
+                .matching("*"+keyword+"*").createQuery();
+</code></pre>
+
+<p>위와 같이 wildcard()를 넣어주고 matching() 메소드 안에 Keyword와 같이 ‘*’ 와일드카드를 인자값으로 넣어주면 됩니다. 기본적으로 와일드카드를 앞뒤로 붙이면 불필요한 결과값들이 많이 포함된다고 하지만 저는 앞에서 언급했듯이 앞뒤 모두의 포함여부를 알고싶기에 이렇게 쿼리를 구성했습니다.<br />
+마지막으로 FullTextEntityManager의 createFullTextQuery 메소드를 사용해 Lucene 쿼리를 Hibernate Search FullTextQuery로 만들어줍니다.</p>
+<pre><code>FullTextQuery fullTextQuery = fullTextEntityManager.createFullTextQuery(query, Board.class);</code></pre>
+
+<p>아래는 전체 코드입니다.</p>
+<pre><code>package com.hoyy.test.Services;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
+
+import org.apache.lucene.search.Query;
+import org.hibernate.search.jpa.FullTextEntityManager;
+import org.hibernate.search.jpa.FullTextQuery;
+import org.hibernate.search.jpa.Search;
+import org.hibernate.search.query.dsl.QueryBuilder;
+import org.springframework.stereotype.Service;
+
+import com.hoyy.test.models.Board;
+
+@Service
+public class HibernateSearchService {
+	@PersistenceContext(type=PersistenceContextType.EXTENDED)
+	private EntityManager entityManager;
+	
+	public void buildIndex() throws InterruptedException {
+		FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
+		fullTextEntityManager.createIndexer().startAndWait();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List&lt;Board&gt; searchBoards(String keyword) {
+		FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
+		QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory()
+									.buildQueryBuilder().forEntity(Board.class).get();
+		Query query = queryBuilder.keyword().wildcard().onField("title")
+						.matching("*"+keyword+"*").createQuery();
+		FullTextQuery fullTextQuery = fullTextEntityManager.createFullTextQuery(query, Board.class);
+		
+		return (List&lt;Board&gt;) fullTextQuery.getResultList();
+	}
+}
+</code></pre>
+
+<hr />
+
+<h1 id="5-arirang-적용">5. Arirang 적용</h1>
+
+<p>마지막으로 한글 검색을 위해 Lucene Korean Analyzer인 아리랑을 적용하였습니다. 아리랑 jar 파일은 수명님께서 운영중이신 korlucene 카페에서 다운받았으며, 관련 내용은 아래 블로그에 자세히 나와있어 참고하였습니다.<br />
+<a href="https://hihoyeho.tistory.com/entry/Spring-Boot-Hibernate-Search-Lucene%EC%9D%84-%EC%9D%B4%EC%9A%A9%ED%95%9C-%EA%B2%80%EC%83%89%EA%B8%B0%EB%8A%A5-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0">https://hihoyeho.tistory.com/entry/Spring-Boot-Hibernate-Search-Lucene%EC%9D%84-%EC%9D%B4%EC%9A%A9%ED%95%9C-%EA%B2%80%EC%83%89%EA%B8%B0%EB%8A%A5-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0</a></p>
+
+<p>참고로 Gradle에 다운받은 jar 파일을 추가하는 방법은 아래와 같이 프로젝트 루트에 jar 파일을 위치시키고 해당 경로를 build.gradle에 추가해 주시면 됩니다.</p>
+<pre><code>dependencies {
+    ...
+    compile files('libs/arirang-morph-1.0.0.jar')
+    compile files('libs/arirang.lucene-analyzer-5.0-1.0.0.jar')
+    ...
+}
+</code></pre>
+
+<hr />
+<p>[참고 사이트]<br />
+<a href="https://hibernate.org/search/">https://hibernate.org/search/</a><br />
+<a href="https://www.baeldung.com/hibernate-search">https://www.baeldung.com/hibernate-search</a><br />
+<a href="http://hibernate.org/search/documentation/getting-started/#indexing">http://hibernate.org/search/documentation/getting-started/#indexing</a><br />
+<a href="https://hihoyeho.tistory.com/entry/Spring-Boot-Hibernate-Search-Lucene%EC%9D%84-%EC%9D%B4%EC%9A%A9%ED%95%9C-%EA%B2%80%EC%83%89%EA%B8%B0%EB%8A%A5-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0">https://hihoyeho.tistory.com/entry/Spring-Boot-Hibernate-Search-Lucene%EC%9D%84-%EC%9D%B4%EC%9A%A9%ED%95%9C-%EA%B2%80%EC%83%89%EA%B8%B0%EB%8A%A5-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0</a></p>
+:ET
